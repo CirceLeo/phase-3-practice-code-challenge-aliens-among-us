@@ -8,21 +8,18 @@ class Alien < ActiveRecord::Base
 
     def total_light_years_traveled
         distance = self.light_years_to_home_planet * 2
-        #count visitations 
+        num_visits = Visitation.where(alien_id: self.id).length
+        distance * num_visits
     end
 
     def self.most_frequent_visitor
-        #visitations
+        Visitation.group(:alien_id).order('DESC')
     end
 
     def self.average_light_years_to_home_planet
-        #Alien.all.sum()
+        total_ly = Alien.all.sum{|alien| alien.light_years_to_home_planet}
+        total_ly / Alien.count
     end
-
-    def count_visitations
-        
-    end
-
 
 
 end
